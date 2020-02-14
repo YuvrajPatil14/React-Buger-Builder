@@ -1,0 +1,73 @@
+.BuildControls {
+    widows: 100%;
+    background-color:rgba(255,255,255,0.6);
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    box-shadow: 0 2px 1px #ccc;
+    margin: auto;
+    padding: 10px 0;
+}
+
+.OrderButton {
+    background-color: #04a72e;
+    outline: none;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    color: white;
+    font-family: inherit;
+    font-size: 1.2em;
+    padding: 5px 20px;
+    box-shadow: 2px 2px 2px #ccc;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+.OrderButton:hover, .OrderButton:active {
+   
+    border: 1px solid #ccc;
+    color: white;
+}
+
+.OrderButton:disabled {
+    background-color: #04a72dc2;
+    cursor: not-allowed;
+    border: 1px solid #ccc;
+    color: rgb(119, 119, 119);
+}
+
+.OrderButton:not(:disabled) {
+    animation: enable 0.3s linear;
+}
+
+@keyframes enable {
+    0% {
+        transform: scale(1);
+    }
+    60% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+.BuildControls:hover{
+    box-shadow: 4px 4px 4px #ccc;
+}
+.PriceTag{
+    border-bottom: 1px solid #ddd;
+    width:100%
+}
+@media (min-width:500px)
+{
+    .BuildControls{
+        margin-left: 20%;
+        margin-right: 20%;
+        margin-bottom: 20px;
+        border-radius: 20px;
+        border: solid 1px #ccc;
+
+    }
+    
+    
+}
