@@ -5,7 +5,10 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 //import BuildControl from '../../components/Burger/BuildControls/BuildControl/BuildControl';
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
-
+import axios from "../../axios-orders";
+import Spinner from "../../components/UI/spinner/Spinner";
+import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
+//import burger from "../../components/Burger/Burger";
 const ING_PRICES = {
   salad: 0.5,
   bacon: 0.3,
@@ -14,16 +17,23 @@ const ING_PRICES = {
 };
 class BurgerBuilder extends Component {
   state = {
-    ingredients: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0
-    },
+    ingredients: null,
     totalPrice: 4,
     purchasable: false,
-    purchasing: false
+    purchasing: false,
+    loading: false,
+    error:false
   };
+  componentDidMount() {
+    axios
+      .get("/ingredients.json")
+      .then(res => {
+        this.setState({ ingredients: res.data });
+      })
+      .catch(err=>{
+        this.setState({error:true})
+      });
+  }
   purchaseHandler = () => {
     this.setState({ purchasing: true });
   };
@@ -66,11 +76,22 @@ class BurgerBuilder extends Component {
     console.log("called", sum);
   };
   purchaseCancelHandler = () => {
-    this.setState({purchasing:false})
-  }
+    this.setState({ purchasing: false });
+  };
   purchaseContinueHandler = () => {
-    alert('You can continue!!')
-  }
+    
+    const queryParams = [];
+    for(let i in this.state.ingredients){
+      queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+    }
+    queryParams.push('price='+this.state.totalPrice);
+    const queryString = queryParams.join('&');
+    this.props.history.push({
+      pathname:'/checkout',
+      search:'?'+ queryString
+    });
+
+  };
   render() {
     const disabledInfo = {
       ...this.state.ingredients
@@ -78,28 +99,51 @@ class BurgerBuilder extends Component {
     for (let key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
-    return (
-      <Aux>
-        <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-          <OrderSummary 
-          ingridients={this.state.ingredients} 
+    let orderSummary = null;
+    let burger = this.state.error?<p>can't load ingridients</p>:<Spinner/>
+    if(this.state.ingredients)
+    {
+      burger = (
+        <Aux>
+          <Burger ingredients={this.state.ingredients} />
+  
+          <BuildControls
+            ingAdded={this.addIngridientHandler}
+            ingRemoved={this.removeIngridientHandler}
+            disabled={disabledInfo}
+            price={this.state.totalPrice}
+            purchasable={this.state.purchasable}
+            ordered={this.purchaseHandler}
+          />
+          
+        </Aux>
+      );
+      orderSummary = (
+        <OrderSummary
+          ingridients={this.state.ingredients}
           price={this.state.totalPrice}
           purchaseCanceled={this.purchaseCancelHandler}
-          purchaseContinue={this.purchaseContinueHandler} />
-        </Modal>
-        <Burger ingredients={this.state.ingredients} />
-
-        <BuildControls
-          ingAdded={this.addIngridientHandler}
-          ingRemoved={this.removeIngridientHandler}
-          disabled={disabledInfo}
-          price={this.state.totalPrice}
-          purchasable={this.state.purchasable}
-          ordered={this.purchaseHandler}
+          purchaseContinue={this.purchaseContinueHandler}
         />
+      );
+
+    }
+    if (this.state.loading) {
+      orderSummary = <Spinner />;
+    }
+    
+    return (
+      <Aux>
+        <Modal
+          show={this.state.purchasing}
+          modalClosed={this.purchaseCancelHandler}
+        >
+          {orderSummary}
+        </Modal>
+        {burger}
       </Aux>
     );
   }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);
