@@ -69,7 +69,7 @@ export const fetchOrders = (token,userId)=> {
     axios
     .get("/orders.json"+queryParams)
     .then(res => {
-        console.log(res.data);
+        //console.log(res.data);
         const fetchedData= [];
         for (let key in res.data){
           fetchedData.push({...res.data[key],id:key});

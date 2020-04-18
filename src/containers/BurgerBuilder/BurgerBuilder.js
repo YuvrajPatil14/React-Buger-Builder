@@ -12,14 +12,14 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import {connect} from 'react-redux';
 import * as actions from "../../store/actions/index";
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   state = {
-   // purchasable: false,
+   
     purchasing: false,
    
   };
   componentDidMount() {
-    console.log('did_mount',this.props);
+    //console.log('did_mount',this.props);
     this.props.onInitIngredients();
    
   }
@@ -91,7 +91,7 @@ class BurgerBuilder extends Component {
     }
     let orderSummary = null;
     let burger = this.props.error?<p>can't load ingridients</p>:<Spinner/>
-    console.log(this.props.ings)
+   // console.log(this.props.ings)
     if(this.props.ings)
     {
       burger = (

@@ -55,18 +55,18 @@ export const auth = (email, password, isSignUp) => {
       returnSecureToken: true
     };
     let url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[APIKEY]";
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBnVd5S9RghVPsmRf1P53wVxbBvdU6XxHg";
     if (!isSignUp) {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[APIKEY]";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBnVd5S9RghVPsmRf1P53wVxbBvdU6XxHg";
     }
     axios
       .post(url, authData)
       .then(response => {
-        console.log(response);
+        //console.log(response);
         const expirationDate = new Date(new Date().getTime() + response.data.expiresIn *1000);
         localStorage.setItem('token',response.data.idToken);
-        console.log(typeof expirationDate);
+        //console.log(typeof expirationDate);
         
         localStorage.setItem('expirationDate',expirationDate);
         localStorage.setItem('userId',response.data.localId);
@@ -74,7 +74,7 @@ export const auth = (email, password, isSignUp) => {
         dispatch(checkAuthTimeOut(response.data.expiresIn));
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
         dispatch(authFail(err.response.data.error));
       });
   };
@@ -129,7 +129,7 @@ export const authCheckState = () => {
 // <script>
 //   // Your web app's Firebase configuration
 //   var firebaseConfig = {
-//     apiKey: "[APIKEY]",
+//     apiKey: "AIzaSyBnVd5S9RghVPsmRf1P53wVxbBvdU6XxHg",
 //     authDomain: "react-b-builder.firebaseapp.com",
 //     databaseURL: "https://react-b-builder.firebaseio.com",
 //     projectId: "react-b-builder",

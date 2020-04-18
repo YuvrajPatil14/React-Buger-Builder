@@ -4,10 +4,10 @@ import Button from  '../../UI/Button/Button';
 
 
 class OrderSummary extends Component {
-  componentWillUpdate(){
-    console.log('order summary will update');
+  // componentWillUpdate(){
+  //   console.log('order summary will update');
     
-  }
+  // }
   render(){
     const ingSummary = Object.keys(this.props.ingridients).map(ingkey => {
       return (
