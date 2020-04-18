@@ -55,10 +55,10 @@ export const auth = (email, password, isSignUp) => {
       returnSecureToken: true
     };
     let url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBnVd5S9RghVPsmRf1P53wVxbBvdU6XxHg";
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=APIKEY";
     if (!isSignUp) {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBnVd5S9RghVPsmRf1P53wVxbBvdU6XxHg";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=APIKEy";
     }
     axios
       .post(url, authData)
@@ -129,7 +129,7 @@ export const authCheckState = () => {
 // <script>
 //   // Your web app's Firebase configuration
 //   var firebaseConfig = {
-//     apiKey: "AIzaSyBnVd5S9RghVPsmRf1P53wVxbBvdU6XxHg",
+//     apiKey: "API_KEY",
 //     authDomain: "react-b-builder.firebaseapp.com",
 //     databaseURL: "https://react-b-builder.firebaseio.com",
 //     projectId: "react-b-builder",
